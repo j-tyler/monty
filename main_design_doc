@@ -1,0 +1,26 @@
+// global variables that keep track of the state of execution
+// stack_t **stack: Top of the stack
+// stack_t **tail: Bottom of the stack
+// int arg: any argument given for the command
+// int mode: mode of execution: stacking or queuing
+
+// Execution:
+// Open monty file given as argument
+// loop:
+// getline from file
+// atoi(line) into global int arg
+// string_match line and 'function structure' to find which operation to use
+// execute operation`
+
+// Functions:
+// Individual logic to do operation requested.
+// Modify global variables if program state changes: ie the head changes push changes stack or tail
+
+// modes: Stack or Queue mode changes the operation of the push? functions:
+// push - Adding item to top or bottom
+
+// Custom functions we will need:
+// _atoi - read line for number, starting at first number found (or negative) and ending after number ends
+// _string_match - will take the line returned from getline and match against possible operations
+//                 for example, "   pall   " should match "pall", "pall34234" should match "pall"
+
