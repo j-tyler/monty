@@ -36,14 +36,12 @@ typedef struct instruction_s
  * struct global - pile of useful global variables
  * @stack: top of the stack
  * @tail: bottom of the stack
- * @number: number found in line
- * @mode: mode for stacking or queuing
+ * @mode: 0 = stacking, 1 = queuing, 2 = program error, clean and exit
  */
 typedef struct global_s
 {
-    char **stack;
-    char **tail;
-    int number;
+    stack_t **stack;
+    stack_t **tail;
     int mode;
 } global_t;
 

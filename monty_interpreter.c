@@ -6,9 +6,8 @@
  * Description: See README for more information. Interpreters montyByteCode.
  * Return: EXIT_SUCCESS
  */
-int main(int argc, char *argv)
+int main(int argc, char **argv)
 {
-    Stack = Tail = Num = NULL;
     char *buf, *opcode;
     unsigned int i, line;
     int fd;
@@ -25,15 +24,7 @@ int main(int argc, char *argv)
     {"stack", Matching_Function}, {"queue", Matching_Function}
     };
 
-    if (argc != 2)
-        exit_with_error("USAGE: monty file\n");
-    fd = open(argv[1], O_RDONLY)
-    if (fd == -1)
-        file_open_error(argv[1]);
-    bufsize = 10;
-    buf = malloc(bufsize);
-    if (buf == NULL)
-        exit_with_error("Error: malloc failed\n");
+    init_program(argc, argv, &fd, &buf, &bufsize);
 
     line = 0;
     while (1)
@@ -41,18 +32,53 @@ int main(int argc, char *argv)
         if (getline(&buf, &bufsize, fd) == -1)
             break;
         line += 1;
+
         opcode = find_arg1(buf);
         if (*opcode == '\0')
             continue;
-        global.number = find_arg2(buf);
+        // find_arg2(buf); only needs to run in push()
 
         for (i = 0; i <= N_OPCODES; i++)
             if (word_match(table[i].opcode, opcode))
                 table[i].f(global.stack, line);
         if (i > N_OPCODES)
-            invalid_code_error(line, opcode);
+            global.mode = 2, invalid_code_error(line, opcode);
+
+        if (global.mode == 2)
+        {
+            free(buf);
+            //free stack
+            close(fd);
+            return (EXIT_FAILURE);
+        }
     }
     return (EXIT_SUCCESS);
+}
+/**
+ * init_program - initiates and checks for correct input to program
+ * @argc: number of arguments
+ * @argv: argument vector
+ * @fd: memory address to save file descriptor
+ * @buf: buffer to use for reading file
+ * @bufsize: size of buffer
+ */
+void init_program(int argc, char **argv, int *fd, char **buf, int *bufsize)
+{
+    if (argc != 2)
+        exit_with_error("USAGE: monty file\n");
+    *fd = open(argv[1], O_RDONLY);
+    if (*fd == -1)
+        file_open_error(argv[1]);
+    *bufsize = 100;
+    *buf = malloc(sizeof(char) * bufsize);
+    if (*buf == NULL)
+    {
+        close(*fd);
+        exit_with_error("Error: malloc failed\n");
+    }
+    global.mode = 0;
+    global.(*stack) = NULL;
+    global.(*tail) = NULL;
 }
 /**
  * exit_with_error - function to gracefully exit program on generic error
