@@ -23,23 +23,22 @@ int main(int argc, char *argv)
     {"pchar", Matching_Function}, {"pstr", Matching_Function}
     {"rotl", Matching_Function}, {"rotr", Matching_Function}
     {"stack", Matching_Function}, {"queue", Matching_Function}
-    {"NOMATCH", Unknown_instruction}
     };
 
     if (argc != 2)
-        error_exit("USAGE: monty file\n");
+        exit_with_error("USAGE: monty file\n");
+    fd = open(argv[1], O_RDONLY)
+    if (fd == -1)
+        file_open_error(argv[1]);
     bufsize = 10;
     buf = malloc(bufsize);
     if (buf == NULL)
-        error_exit("Error: malloc failed\n");
-    fd = open(argv[1], O_RDONLY)
-    if (fd == -1)
-        // exit on file open error
+        exit_with_error("Error: malloc failed\n");
 
     line = 0;
     while (1)
     {
-        if (getline(&buf, &bufsize, /*FileDescriptor*/) == -1)
+        if (getline(&buf, &bufsize, fd) == -1)
             break;
         line += 1;
         opcode = find_arg1(buf);
@@ -47,20 +46,61 @@ int main(int argc, char *argv)
             continue;
         Num = find_arg2(buf);
 
-        for (i = 0; i < N_OPCODES; i++)
+        for (i = 0; i <= N_OPCODES; i++)
             if (word_match(table[i].opcode, opcode))
                 table[i].f(Stack, line);
-        if (i == N_OPCODES)
-            // complex error exit here
+        if (i > N_OPCODES)
+            invalid_code_error(line, opcode);
     }
     return (EXIT_SUCCESS);
 }
 /**
- * error_exit - function to gracefully exit program on error
+ * exit_with_error - function to gracefully exit program on generic error
  * @msg: message to print before exit
  */
-void error_exit(char *msg)
+void exit_with_error(char *msg)
 {
     write(STDOUT_FILENO, msg, strlen(msg));
+    exit(EXIT_FAILURE);
+}
+/**
+ * file_open_error - Error on opening file
+ * @file: file we tried to open
+ */
+void file_open_error(char *file)
+{
+    printf("Error: Can't open file %s\n", file);
+    exit(EXIT_FAILURE);
+}
+/**
+ * invalid_code_error - Error in opcode
+ * @line: line number of error
+ * @opcode: opcode that doesn't exist
+ */
+void invalid_code_error(int line, char *opcode)
+{
+    char *old;
+
+    /* insert an end of string so the printout takes only the opcode */
+    old = opcode;
+    while (*opcode != ' ')
+    {
+        if (*opcode == '\0')
+            break;
+        opcode++;
+    }
+    *opcode = '\0';
+
+    printf("L%d: unknown instruction %s\n", line, old);
+    exit(EXIT_FAILURE);
+}
+/**
+ * op_function_error - Error processing opcode function
+ * @line: line number of error
+ * @msg: message to send
+ */
+void op_function_error(int line, char *msg)
+{
+    printf("L%d: %s\n", line, msg);
     exit(EXIT_FAILURE);
 }

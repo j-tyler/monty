@@ -1,7 +1,7 @@
 #ifndef MONTY_H
 #define MONTY_H
 
-#define N_OPCODES 19
+#define N_OPCODES 18
 
 
 /**
@@ -45,7 +45,10 @@ extern char *Num;
 extern int Mode;
 
 /* monty_interpreter.c */
-void error_exit(char *msg);
+void exit_with_error(char *msg);
+void file_open_error(char *file);
+void invalid_code_error(int line, char *opcode);
+void op_function_error(int line, char *msg);
 
 /* helpers.c */
 char *find_arg1(char *buf);
