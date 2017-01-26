@@ -13,15 +13,15 @@ int main(int argc, char **argv)
     int fd;
     size_t bufsize;
     instruction_t table[N_OPCODES] = {
-    {"push", Matching_Function}, {"pall", Matching_Function}
-    {"pint", Matching_Function}, {"pop", Matching_Function}
-    {"swap", Matching_Function}, {"add", Matching_Function}
-    {"nop", Matching_Function}, {"sub", Matching_Function}
-    {"div", Matching_Function}, {"mul", Matching_Function}
-    {"mod", Matching_Function}, {"#", Matching_Function}
-    {"pchar", Matching_Function}, {"pstr", Matching_Function}
-    {"rotl", Matching_Function}, {"rotr", Matching_Function}
-    {"stack", Matching_Function}, {"queue", Matching_Function}
+    {"push", Matching_Function}, {"pall", Matching_Function},
+    {"pint", Matching_Function}, {"pop", Matching_Function},
+    {"swap", Matching_Function}, {"add", Matching_Function},
+    {"nop", Matching_Function}, {"sub", Matching_Function},
+    {"div", Matching_Function}, {"mul", Matching_Function},
+    {"mod", Matching_Function},
+    {"pchar", Matching_Function}, {"pstr", Matching_Function},
+    {"rotl", Matching_Function}, {"rotr", Matching_Function},
+    {"stack", Matching_Function}, {"queue", Matching_Function},
     };
 
     init_program(argc, argv, &fd, &buf, &bufsize);
@@ -34,7 +34,7 @@ int main(int argc, char **argv)
         line += 1;
 
         opcode = find_arg1(buf);
-        if (*opcode == '\0')
+        if (*opcode == '\0' || '#')
             continue;
         // find_arg2(buf); only needs to run in push()
 
@@ -118,7 +118,6 @@ void invalid_code_error(int line, char *opcode)
     *opcode = '\0';
 
     printf("L%d: unknown instruction %s\n", line, old);
-    exit(EXIT_FAILURE);
 }
 /**
  * op_function_error - Error processing opcode function
@@ -128,5 +127,4 @@ void invalid_code_error(int line, char *opcode)
 void op_function_error(int line, char *msg)
 {
     printf("L%d: %s\n", line, msg);
-    exit(EXIT_FAILURE);
 }
