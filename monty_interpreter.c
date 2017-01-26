@@ -44,11 +44,11 @@ int main(int argc, char *argv)
         opcode = find_arg1(buf);
         if (*opcode == '\0')
             continue;
-        Num = find_arg2(buf);
+        global.number = find_arg2(buf);
 
         for (i = 0; i <= N_OPCODES; i++)
             if (word_match(table[i].opcode, opcode))
-                table[i].f(Stack, line);
+                table[i].f(global.stack, line);
         if (i > N_OPCODES)
             invalid_code_error(line, opcode);
     }

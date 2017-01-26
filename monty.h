@@ -32,17 +32,22 @@ typedef struct instruction_s
         char *opcode;
         void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
-/* Head of the stack */
-extern stack_t **Stack;
+/**
+ * struct global - pile of useful global variables
+ * @stack: top of the stack
+ * @tail: bottom of the stack
+ * @number: number found in line
+ * @mode: mode for stacking or queuing
+ */
+typedef struct global_s
+{
+    char **stack;
+    char **tail;
+    int number;
+    int mode;
+} global_t;
 
-/* Tail of stack. Only changed in queue() and push() */
-extern stack_t **Tail;
-
-/* Pointer to arg2 of line */
-extern char *Num;
-
-/* Mode of program. 0 is Stack, 1 is Queue */
-extern int Mode;
+extern global_t global;
 
 /* monty_interpreter.c */
 void exit_with_error(char *msg);
