@@ -15,9 +15,25 @@ int main(int argc, char **argv)
 {
     int status;
     char *mall;
-    (void)argc, (void)argv;
+    
+    if (argc != 2)
+    {
+        printf("USAGE: monty file\n");
+        exit(EXIT_FAILURE);
+    }
     mall = malloc(1000);
+    if (mall == NULL)
+    {
+        printf("Error: malloc failed\n");
+        exit(EXIT_FAILURE);
+    }
     free(mall);
+    status = open(argv[1], O_RDONLY);
+    if (status == -1)
+    {
+        printf("Error: Can't open file %s\n", argv[1]);
+        exit(EXIT_FAILURE);
+    }
     status = fork_and_execute(argv);
     if (status != 0)
         exit(EXIT_FAILURE);
