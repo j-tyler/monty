@@ -8,7 +8,7 @@
  */
 int main(int argc, char **argv)
 {
-    char *buf, *opcode;
+    char *opcode;
     unsigned int i, line;
     int fd;
     size_t bufsize;
@@ -24,12 +24,12 @@ int main(int argc, char **argv)
     {"stack", Matching_Function}, {"queue", Matching_Function},
     };
 
-    init_program(argc, argv, &fd, &buf, &bufsize);
+    init_program(argc, argv, &fd, global.(&buf), &bufsize);
 
     line = 0;
     while (1)
     {
-        if (getline(&buf, &bufsize, fd) == -1)
+        if (getline(global.(&buf), &bufsize, fd) == -1)
             break;
         line += 1;
 

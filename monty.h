@@ -36,12 +36,14 @@ typedef struct instruction_s
  * struct global - pile of useful global variables
  * @stack: top of the stack
  * @tail: bottom of the stack
+ * @buf: readline buffer
  * @mode: 0 = stacking, 1 = queuing, 2 = program error, clean and exit
  */
 typedef struct global_s
 {
     stack_t **stack;
     stack_t **tail;
+    char *buf;
     int mode;
 } global_t;
 
@@ -60,4 +62,18 @@ void op_function_error(int line, char *msg);
 char *find_arg1(char *buf);
 char *find_arg2(char *buf);
 int word_match(char *s1, char *s2);
+int parse_number(void);
+
+/* push.c */
+void push(stack_t **stack, unsigned int line);
+stack_t *create_node(void);
+
+/* pop.c */
+void pop(stack_t **stack, unsigned int line);
+
+/* swap */
+void swap(stack_t **stack, unsigned int line);
+
+/* add.c */
+void add(stack_t **stack, unsigned int line);
 #endif

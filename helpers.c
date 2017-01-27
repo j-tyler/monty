@@ -76,3 +76,20 @@ int word_match(char *s1, char *s2)
 
     return (0);
 }
+/**
+ * parse_number - Return the number from the string
+ * Description: If a non-number is found, set mode to 2 to signal error
+ * Return: Number found
+ */
+int parse_number(void)
+{
+    char *arg;
+
+    arg = find_arg2(global.buf);
+    if (*arg < '0' || *arg > '9')
+    {
+        global.mode = 2;
+        return (0);
+    }
+    return (atoi(arg));
+}
