@@ -39,18 +39,17 @@ int main(int argc, char **argv)
         // find_arg2(buf); only needs to run in push()
 
         for (i = 0; i <= N_OPCODES; i++)
+        {
             if (word_match(table[i].opcode, opcode))
+            {
                 table[i].f(global.stack, line);
+                break;
+            }
+        }
         if (i > N_OPCODES)
             global.mode = 2, invalid_code_error(line, opcode);
-
         if (global.mode == 2)
-        {
-            free(buf);
-            //free stack
-            close(fd);
-            return (EXIT_FAILURE);
-        }
+            exit_fail_cleanup(buf, fd);
     }
     return (EXIT_SUCCESS);
 }
@@ -81,50 +80,14 @@ void init_program(int argc, char **argv, int *fd, char **buf, int *bufsize)
     global.(*tail) = NULL;
 }
 /**
- * exit_with_error - function to gracefully exit program on generic error
- * @msg: message to print before exit
+ * exit_fail_cleanup- clean up and exit the process
+ * @buf: buffer to free
+ * @fd: file to close
  */
-void exit_with_error(char *msg)
+void exit_fail_cleanup(char *buf, int fd)
 {
-    write(STDOUT_FILENO, msg, strlen(msg));
+    free(buf);
+    // free stack
+    close(fd);
     exit(EXIT_FAILURE);
-}
-/**
- * file_open_error - Error on opening file
- * @file: file we tried to open
- */
-void file_open_error(char *file)
-{
-    printf("Error: Can't open file %s\n", file);
-    exit(EXIT_FAILURE);
-}
-/**
- * invalid_code_error - Error in opcode
- * @line: line number of error
- * @opcode: opcode that doesn't exist
- */
-void invalid_code_error(int line, char *opcode)
-{
-    char *old;
-
-    /* insert an end of string so the printout takes only the opcode */
-    old = opcode;
-    while (*opcode != ' ')
-    {
-        if (*opcode == '\0')
-            break;
-        opcode++;
-    }
-    *opcode = '\0';
-
-    printf("L%d: unknown instruction %s\n", line, old);
-}
-/**
- * op_function_error - Error processing opcode function
- * @line: line number of error
- * @msg: message to send
- */
-void op_function_error(int line, char *msg)
-{
-    printf("L%d: %s\n", line, msg);
 }

@@ -1,7 +1,7 @@
 #ifndef MONTY_H
 #define MONTY_H
 
-#define N_OPCODES 18
+#define N_OPCODES 17
 
 
 /**
@@ -48,6 +48,9 @@ typedef struct global_s
 extern global_t global;
 
 /* monty_interpreter.c */
+void exit_fail_cleanup(char *buf, fd);
+
+/* exits.c */
 void exit_with_error(char *msg);
 void file_open_error(char *file);
 void invalid_code_error(int line, char *opcode);
