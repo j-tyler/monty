@@ -13,6 +13,7 @@ for index, line in enumerate(file):
         print('{}'.format('\n'.join([str(i) for i in l])))
     else:
         print("L{}: unknown instruction {}".format(index,
-            str(re.findall(r'\b*\b', line)[0])))
+            str(re.findall(r'\b[^\W\d_]+\b', line)[0])))
+        sys.exit(1)
 sys.exit(0)
 
