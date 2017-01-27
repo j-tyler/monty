@@ -14,7 +14,10 @@ extern char **environ;
 int main(int argc, char **argv)
 {
     int status;
+    char *mall;
     (void)argc, (void)argv;
+    mall = malloc(1000);
+    free(mall);
     status = fork_and_execute(argv);
     if (status != 0)
         exit(EXIT_FAILURE);
