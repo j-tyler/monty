@@ -16,7 +16,9 @@ int main(int argc, char **argv)
     int status;
     (void)argc, (void)argv;
     status = fork_and_execute(argv);
-    return (status);
+    if (status != 0)
+        exit(EXIT_FAILURE);
+    return (EXIT_SUCCESS);
 }
 /**
  * fork_and_execute - Fork off to python script
