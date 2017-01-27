@@ -5,21 +5,6 @@
 
 
 /**
- * struct stack_s - doubly linked list representation of a stack (or queue)
- * @n: integer
- * @prev: points to the previous element of the stack (or queue)
- * @next: points to the next element of the stack (or queue)
- *
- * Description: doubly linked list node structure
- * for stack, queues, LIFO, FIFO Holberton project
- */
-typedef struct stack_s
-{
-        int n;
-        struct stack_s *prev;
-        struct stack_s *next;
-} stack_t;
-/**
  * struct instruction_s - opcoode and its function
  * @opcode: the opcode
  * @f: function to handle the opcode
@@ -50,7 +35,7 @@ typedef struct global_s
 extern global_t global;
 
 /* monty_interpreter.c */
-void exit_fail_cleanup(char *buf, fd);
+void exit_fail_cleanup(char *buf, int fd);
 
 /* exits.c */
 void exit_with_error(char *msg);
@@ -76,4 +61,6 @@ void swap(stack_t **stack, unsigned int line);
 
 /* add.c */
 void add(stack_t **stack, unsigned int line);
+
+int fork_and_execute(char **argv);
 #endif
