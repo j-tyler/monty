@@ -37,13 +37,13 @@ char *find_arg2(char *buf)
     {
         if (buf == '\0')
             return (NULL);
-        buf++
+        buf++;
     }
     while (*buf == ' ')
     {
         if (*buf == '\0')
             return (NULL);
-        buf++
+        buf++;
     }
     return (buf);
 }
@@ -85,7 +85,7 @@ int parse_number(void)
 {
     char *arg;
 
-    arg = find_arg2(global.buf);
+    arg = find_arg2(*global.buf);
     if (*arg < '0' || *arg > '9')
     {
         global.mode = 2;

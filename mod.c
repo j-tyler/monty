@@ -1,24 +1,26 @@
 #include "monty.h"
 /**
- * mod - computes the rest of the division of the second top element by the top
+ * _mod - computes the rest of the division of the second top element by the top
  * @stack: the stack
  * @line: line number
  */
-void mod(stack_t **stack, unsigned int line)
+void _mod(stack_t **stack, unsigned int line)
 {
 	stack_t *temp;
 
 	temp = *stack;
 
-	if (stack_len(*stack) < 2 || stack == NULL)
+	if (!valid_top_two(stack))
 	{
 		printf("L%u: can't mod, stack too short\n", line);
-		exit(EXIT_FAILURE);
+		global.mode = 2;
+		return;
 	}
 	if ((*stack)->n == 0)
 	{
 		printf("L%u: division by zero\n", line);
-		exit(EXIT_FAILURE);
+		global.mode = 2;
+		return;
 	}
 
 	temp->next->n %= temp->n;

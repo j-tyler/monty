@@ -1,13 +1,21 @@
 #include "monty.h"
 /**
- * push - Push onto the stack
+ * _push - Push onto the stack
  * @stack: the stack
  * @line: line number
  */
-void push(stack_t **stack, unsigned int line)
+void _push(stack_t **stack, unsigned int line)
 {
-    // if mode 0, stack
-    // if mode 1, queue
+    /* if mode 0, stack */
+	if (global.stack == NULL)
+		printf("DEBUG: We made a mistake creating our stack\n"); 
+	if (*stack == NULL)
+	{
+		*global.stack = create_node();		
+		if (global.mode == 2)
+			printf("L%u: usage: push integer\n", line);
+	}
+    /* if mode 1, queue */
 }
 /**
  * create_node - creates a new node, returns pointer to node
@@ -21,8 +29,8 @@ stack_t *create_node(void)
     if (node == NULL)
         exit_with_error("Error: malloc failed");
 
-    node.n = parse_number();
-    node.prev = NULL;
-    node.next = NULL;
+    node->n = parse_number();
+    node->prev = NULL;
+    node->next = NULL;
     return (node);
 }

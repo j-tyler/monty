@@ -8,7 +8,7 @@ void pop(stack_t **stack, unsigned int line)
 {
     stack_t *tmp;
 
-    if (**stack == NULL || *stack == NULL)
+    if (!valid_stack(stack))
     {
         global.mode = 2;
         op_function_error(line, "can't pop an empty stack");
