@@ -52,7 +52,7 @@ int main(int argc, char **argv)
         line += 1;
 
         opcode = find_arg1(*global.buf);
-        if (*opcode == '\0' || *opcode == '#')
+        if (*opcode == '\0' || *opcode == '#' || *opcode == '\n')
             continue;
 
         for (i = 0; i < N_OPCODES; i++)
