@@ -58,7 +58,7 @@ int main(int argc, char **argv)
  * @buf: buffer to use for reading file
  * @bs: size of buffer
  */
-void init_program(int argc, char **argv, FILE *fd, char **buf, size_t *bs)
+void init_program(int argc, char **argv, FILE **fd, char **buf, size_t *bs)
 {
 	(void) buf;
 	*bs = 0;
