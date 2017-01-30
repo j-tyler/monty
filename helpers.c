@@ -85,7 +85,7 @@ int parse_number(void)
 {
 	char *arg;
 
-	arg = find_arg2(*global.buf);
+	arg = find_arg2(global.buf);
 	if ((*arg < '0' || *arg > '9') && *arg != '-')
 	{
 		global.mode = 2;
