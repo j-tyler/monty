@@ -30,7 +30,7 @@ void invalid_code_error(int line, char *opcode)
     old = opcode;
     while (*opcode != ' ')
     {
-        if (*opcode == '\0')
+        if (*opcode == '\0' || *opcode == '\n')
             break;
         opcode++;
     }
