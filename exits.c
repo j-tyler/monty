@@ -5,8 +5,8 @@
  */
 void exit_with_error(char *msg)
 {
-    write(STDOUT_FILENO, msg, strlen(msg));
-    exit(EXIT_FAILURE);
+	write(STDOUT_FILENO, msg, strlen(msg));
+	exit(EXIT_FAILURE);
 }
 /**
  * file_open_error - Error on opening file
@@ -14,8 +14,8 @@ void exit_with_error(char *msg)
  */
 void file_open_error(char *file)
 {
-    printf("Error: Can't open file %s\n", file);
-    exit(EXIT_FAILURE);
+	printf("Error: Can't open file %s\n", file);
+	exit(EXIT_FAILURE);
 }
 /**
  * invalid_code_error - Error in opcode
@@ -24,19 +24,19 @@ void file_open_error(char *file)
  */
 void invalid_code_error(int line, char *opcode)
 {
-    char *old;
+	char *old;
 
-    /* insert an end of string so the printout takes only the opcode */
-    old = opcode;
-    while (*opcode != ' ')
-    {
-        if (*opcode == '\0' || *opcode == '\n')
-            break;
-        opcode++;
-    }
-    *opcode = '\0';
+	/* insert an end of string so the printout takes only the opcode */
+	old = opcode;
+	while (*opcode != ' ')
+	{
+		if (*opcode == '\0' || *opcode == '\n')
+			break;
+		opcode++;
+	}
+	*opcode = '\0';
 
-    printf("L%d: unknown instruction %s\n", line, old);
+	printf("L%d: unknown instruction %s\n", line, old);
 }
 /**
  * op_function_error - Error processing opcode function
@@ -45,5 +45,5 @@ void invalid_code_error(int line, char *opcode)
  */
 void op_function_error(int line, char *msg)
 {
-    printf("L%d: %s\n", line, msg);
+	printf("L%d: %s\n", line, msg);
 }
