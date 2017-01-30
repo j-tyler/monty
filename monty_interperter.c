@@ -20,20 +20,10 @@ int main(int argc, char **argv)
 	{"div", &_div}, {"mul", &_mul}, {"mod", &_mod},	{"pchar", &_pchar},
 	{"pstr", &_pstr}, {"rotl", &_rotl}, {"rotr", &_rotr}, {"stack", &_stack},
 	{"queue", &_queue}, };
-	/* init_program(argc, argv, &fd, global.buf, &bufsize); */
-	if (argc != 2)
-		exit_with_error("USAGE: monty file\n");
 	fd = fopen(argv[1], "r");
 	if (fd == NULL)
 		file_open_error(argv[1]);
-	bufsize = 1000;
-	global.buf = malloc(sizeof(char) * 1000);
-	if (global.buf == NULL)
-	{
-		fclose(fd);
-		exit_with_error("Error: malloc failed\n");
-	}
-	global.mode = 0, global.stack = NULL, global.tail = NULL;
+	init_program(argc, argv, fd, global.buf, &bufsize);
 	line = 0;
 	while (1)
 	{
@@ -67,20 +57,19 @@ int main(int argc, char **argv)
  * @argv: argument vector
  * @fd: memory address to save file descriptor
  * @buf: buffer to use for reading file
- * @bufsize: size of buffer
+ * @bs: size of buffer
  */
-void init_program(int argc, char **argv, FILE **fd, char **buf, size_t *bs)
+void init_program(int argc, char **argv, FILE *fd, char **buf, size_t *bs)
 {
+	(void) argv;
+	(void) buf;
 	if (argc != 2)
 		exit_with_error("USAGE: monty file\n");
-	*fd = fopen(argv[1], "r");
-	if (*fd == NULL)
-		file_open_error(argv[1]);
 	*bs = 1000;
-	buf = malloc(sizeof(char) * 1000);
-	if (buf == NULL)
+	global.buf = malloc(sizeof(char) * 1000);
+	if (global.buf == NULL)
 	{
-		fclose(*fd);
+		fclose(fd);
 		exit_with_error("Error: malloc failed\n");
 	}
 	global.mode = 0;
