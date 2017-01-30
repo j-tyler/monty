@@ -6,15 +6,28 @@
  */
 void _push(stack_t **stack, unsigned int line)
 {
+	stack_t *tmp;
+
     /* if mode 0, stack */
-	if (global.stack == NULL)
+	if (stack == NULL)
 		printf("DEBUG: We made a mistake creating our stack\n"); 
 	if (*stack == NULL)
 	{
-		*global.stack = create_node();		
+		global.stack = create_node();		
 		if (global.mode == 2)
 			printf("L%u: usage: push integer\n", line);
 	}
+	else
+	{
+		tmp = *stack;
+		global.stack = create_node();
+		if (global.mode == 2)
+		{
+			printf("L%u: usage: push integer\n", line);
+			return;
+		}	
+		global.stack->next = tmp;
+	}		
     /* if mode 1, queue */
 }
 /**

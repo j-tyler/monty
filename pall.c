@@ -5,8 +5,16 @@
  * @line: line number                                                                
  */                                                                                  
 void _pall(stack_t **stack, unsigned int line)                                        
-{                                                                                    
-	/* Print the stack */
-	/* if it is empty, do nothing */                                                                 (void) stack;
-	(void) line; 
+{
+	stack_t *tmp;
+
+	(void) line;
+	if (!valid_stack(stack))
+		return;
+	tmp = *stack;
+	while (tmp != NULL)
+	{
+		printf("%d\n", tmp->n);
+		tmp = tmp->next;
+	}
 }

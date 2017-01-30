@@ -12,7 +12,7 @@ int main(int argc, char **argv)
 {
     char *opcode;
     unsigned int i, line;
-    FILE fd;
+    FILE *fd;
     size_t bufsize;
     instruction_t table[N_OPCODES] = {
     {"push", &_push}, {"pall", &_pall},
@@ -26,28 +26,44 @@ int main(int argc, char **argv)
     {"stack", &_stack}, {"queue", &_queue},
     };
 
-    init_program(argc, argv, &fd, global.buf, &bufsize);
+    /* init_program(argc, argv, &fd, global.buf, &bufsize); */
+
+    if (argc != 2)
+        exit_with_error("USAGE: monty file\n");
+    fd = fopen(argv[1], "r");
+    if (fd == NULL)
+        file_open_error(argv[1]);
+    bufsize = 1000;
+    global.buf = malloc(sizeof(char) * 1000);
+    if (global.buf == NULL)
+    {
+        fclose(fd);
+        exit_with_error("Error: malloc failed\n");
+    }
+    global.mode = 0;
+    global.stack = NULL;
+    global.tail = NULL;
 
     line = 0;
     while (1)
     {
-        if (getline(global.buf, &bufsize, &fd) == -1)
-            break;
+		if (getline(global.buf, &bufsize, fd) == -1)
+			break;
         line += 1;
 
         opcode = find_arg1(*global.buf);
-        if (*opcode == '\0' || '#')
+        if (*opcode == '\0' || *opcode == '#')
             continue;
 
-        for (i = 0; i <= N_OPCODES; i++)
+        for (i = 0; i < N_OPCODES; i++)
         {
             if (word_match(table[i].opcode, opcode))
             {
-                table[i].f(global.stack, line);
+                table[i].f(&global.stack, line);
                 break;
             }
         }
-        if (i > N_OPCODES)
+        if (i >= N_OPCODES)
             global.mode = 2, invalid_code_error(line, opcode);
         if (global.mode == 2)
             exit_fail_cleanup(*global.buf, fd);
@@ -62,33 +78,49 @@ int main(int argc, char **argv)
  * @buf: buffer to use for reading file
  * @bufsize: size of buffer
  */
-void init_program(int argc, char **argv, FILE *fd, char **buf, size_t *bufsize)
+void init_program(int argc, char **argv, FILE **fd, char **buf, size_t *bufsize)
 {
     if (argc != 2)
         exit_with_error("USAGE: monty file\n");
-    fd = fopen(argv[1], "r");
-    if (fd == NULL)
+    *fd = fopen(argv[1], "r");
+    if (*fd == NULL)
         file_open_error(argv[1]);
-    *bufsize = 100;
-    *buf = malloc(sizeof(char) * *bufsize);
-    if (*buf == NULL)
+    *bufsize = 1000;
+    buf = malloc(sizeof(char) * 1000);
+    if (buf == NULL)
     {
-        fclose(fd);
+        fclose(*fd);
         exit_with_error("Error: malloc failed\n");
     }
     global.mode = 0;
-    *global.stack = NULL;
-    *global.tail = NULL;
+    global.stack = NULL;
+    global.tail = NULL;
 }
 /**
  * exit_fail_cleanup- clean up and exit the process
  * @buf: buffer to free
  * @fd: file to close
  */
-void exit_fail_cleanup(char *buf, FILE fd)
+void exit_fail_cleanup(char *buf, FILE *fd)
 {
-    free(buf);
-    /* ADD: free stack */
-    fclose(&fd);
+
+	(void) buf;
+    free(global.buf);
+	free_stack();
+    fclose(fd);
     exit(EXIT_FAILURE);
+}
+/**
+ * free_stack - free all memory in the stack
+ */
+void free_stack(void)
+{
+	stack_t *tmp;
+
+	while (global.stack != NULL)
+	{
+		tmp = global.stack;
+		global.stack = (global.stack)->next;
+		free(tmp);
+	}
 }
