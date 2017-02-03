@@ -8,13 +8,14 @@ void _rotr(stack_t **stack, unsigned int line)
 {
 	stack_t *old_tail, *tmp;
 
+	(void) line;
 	if (!valid_top_two(stack))
 		return;
 
 	tmp = global.stack;
 	while (tmp->next != NULL)
 		tmp = tmp->next;
-	tmp->prev->next = NULL
+	tmp->prev->next = NULL;
 	old_tail = tmp;
 
 	old_tail->next = global.stack;

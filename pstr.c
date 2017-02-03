@@ -8,6 +8,7 @@ void _pstr(stack_t **stack, unsigned int line)
 {
 	stack_t *tmp;
 
+	(void) line;
 	if (!valid_stack(stack))
 	{
 		printf("\n");
@@ -15,9 +16,9 @@ void _pstr(stack_t **stack, unsigned int line)
 	}
 
 	tmp = *stack;
-	while (*tmp >= 1 && *tmp <= 127)
+	while (tmp->n >= 1 && tmp->n <= 127)
 	{
-		printf("%c", *tmp);
+		printf("%c", tmp->n);
 		tmp = tmp->next;
 	}
 	printf("\n");

@@ -8,6 +8,7 @@ void _rotl(stack_t **stack, unsigned int line)
 {
 	stack_t *old_head, *tmp;
 
+	(void) line;
 	if (!valid_top_two(stack))
 		return;
 
