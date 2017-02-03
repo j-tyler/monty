@@ -6,7 +6,19 @@
  */
 void _pstr(stack_t **stack, unsigned int line)
 {
-	 (void) stack;
-	 (void) line;
-}
+	stack_t *tmp;
 
+	if (!valid_stack(stack))
+	{
+		printf("\n");
+		return;
+	}
+
+	tmp = *stack;
+	while (*tmp >= 1 && *tmp <= 127)
+	{
+		printf("%c", *tmp);
+		tmp = tmp->next;
+	}
+	printf("\n");
+}
