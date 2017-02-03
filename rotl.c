@@ -16,7 +16,7 @@ void _rotl(stack_t **stack, unsigned int line)
 	global.stack = global.stack->next;
 	global.stack->prev = NULL;
 
-	tmp = global.stack->next;
+	tmp = global.stack;
 	while (tmp->next != NULL)
 		tmp = tmp->next;
 	tmp->next = old_head;
