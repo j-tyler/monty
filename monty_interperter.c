@@ -25,9 +25,7 @@ int main(int argc, char **argv)
 	while (1)
 	{
 		if (getline(&global.buf, &bufsize, fd) == -1)
-		{
 			break;
-		}
 		line += 1;
 
 		opcode = find_arg1(global.buf);
@@ -67,6 +65,8 @@ void init_program(int argc, char **argv, FILE **fd, char **buf, size_t *bs)
 	(void) buf;
 	*bs = 0;
 	*fd = fopen(argv[1], "r");
+	if (*fd == NULL)
+		file_open_error(argv[1]);
 	if (argc != 2)
 		exit_with_error("USAGE: monty file\n");
 	global.mode = 0;
