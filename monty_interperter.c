@@ -65,10 +65,10 @@ void init_program(int argc, char **argv, FILE **fd, char **buf, size_t *bs)
 	(void) buf;
 	*bs = 0;
 	*fd = fopen(argv[1], "r");
-	if (*fd == NULL)
-		file_open_error(argv[1]);
 	if (argc != 2)
 		exit_with_error("USAGE: monty file\n");
+	if (*fd == NULL)
+		file_open_error(argv[1]);
 	global.mode = 0;
 	global.stack = NULL;
 	global.tail = NULL;
