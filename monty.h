@@ -55,7 +55,7 @@ typedef struct global_s
 extern global_t global;
 
 /* monty_interpreter.c */
-void exit_fail_cleanup(char *buf, FILE *fd);
+void exit_cleanup(char *buf, FILE *fd);
 void init_program(int argc, char **argv, FILE **fd, char **buf, size_t *bs);
 void free_stack(void);
 

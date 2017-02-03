@@ -45,8 +45,12 @@ int main(int argc, char **argv)
 		if (i >= N_OPCODES)
 			global.mode = 2, invalid_code_error(line, opcode);
 		if (global.mode == 2)
-			exit_fail_cleanup(global.buf, fd);
+		{
+			exit_cleanup(global.buf, fd);
+			exit(EXIT_FAILURE);
+		}
 	}
+	exit_cleanup(global.buf, fd);
 	return (EXIT_SUCCESS);
 }
 
@@ -70,18 +74,17 @@ void init_program(int argc, char **argv, FILE **fd, char **buf, size_t *bs)
 	global.tail = NULL;
 }
 /**
- * exit_fail_cleanup- clean up and exit the process
+ * exit_cleanup- clean up and exit the process
  * @buf: buffer to free
  * @fd: file to close
  */
-void exit_fail_cleanup(char *buf, FILE *fd)
+void exit_cleanup(char *buf, FILE *fd)
 {
 
 	(void) buf;
 	free(global.buf);
 	free_stack();
 	fclose(fd);
-	exit(EXIT_FAILURE);
 }
 /**
  * free_stack - free all memory in the stack
